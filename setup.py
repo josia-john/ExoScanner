@@ -12,7 +12,8 @@ setup(
                       'numpy',                    
                       'astropy',
                       'statistics',
-                      'photutils'
+                      'photutils',
+                      'scipy'
                       ],
 
     classifiers=[
