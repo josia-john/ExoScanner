@@ -24,3 +24,6 @@ When the light-frames are sorted by name, they should also be sorted by observat
 
 Exoscanner generates a folder `results/` in the current directory, make sure it
 doesn't already exist, or that there is nothing important in it.
+
+An example data-set to test the software can be found here: 
+https://drive.google.com/drive/folders/13AZ1xhNR8qf8G5aFWLcC5ObRZvBCNXpz?usp=sharing
