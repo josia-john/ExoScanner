@@ -65,7 +65,7 @@ def getBrightnessScoreOfStars(brightness):
     for star in range(0, len(brightness[0])):
         score.append(0)
         for i in range(0, len(brightness)):
-            score[star] += brightness[i][star]
+            score[star] += int(brightness[i][star])
 
     return score
 
