@@ -6,7 +6,6 @@
 
 import os
 from astropy.io import fits
-import rawpy
 import numpy as np
 
 def rebin(arr, new_shape):
@@ -25,10 +24,6 @@ def readImage(filename, binning = 1):
         with fits.open(filename) as hdu:
             rgb = list(hdu[0].data)
             rgb.reverse()
-
-    elif (os.path.splitext(filename)[1].lower() == '.cr2'):
-        with rawpy.imread(filename) as raw:
-            rgb = raw.postprocess(gamma=(1, 1), no_auto_bright=True, output_bps=16)
 
     else:
         raise ValueError("your file has a not supported type!")
