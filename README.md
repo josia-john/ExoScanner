@@ -23,10 +23,16 @@ with `<path>` being the path to a folder with the to be analyzed light-frames.
 When the light-frames are sorted by name, they should also be sorted by observation-time.
 
 Exoscanner generates a folder `results/` in the current directory, make sure it
-doesn't already exist, or that there is nothing important in it.
+doesn't already exist, or that there is nothing important in it. There it stores
+the results. It generates 10 images like the following, of the stars it thinks
+it's most likely that a transit occured.
+
+![example output](images/exampleOutput.png)
 
 An example data-set to test the software can be found here: 
 https://drive.google.com/drive/folders/13AZ1xhNR8qf8G5aFWLcC5ObRZvBCNXpz?usp=sharing
+
+
 
 ## FAQ
 If you have any questions, feel free to contact me! I can be reached at [me@jlabs.anonaddy.com](mailto:me@jlabs.anonaddy.com)
