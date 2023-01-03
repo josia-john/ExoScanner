@@ -27,3 +27,9 @@ doesn't already exist, or that there is nothing important in it.
 
 An example data-set to test the software can be found here: 
 https://drive.google.com/drive/folders/13AZ1xhNR8qf8G5aFWLcC5ObRZvBCNXpz?usp=sharing
+
+## FAQ
+If you have any questions, feel free to contact me! I can be reached at [me@jlabs.anonaddy.com](mailto:me@jlabs.anonaddy.com)
+
+If you already want a copy of my paper, please also contact me. The final version
+will be uploaded here on January 9th though.
