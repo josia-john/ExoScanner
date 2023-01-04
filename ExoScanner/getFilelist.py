@@ -2,16 +2,17 @@
 # files starting with "." (hidden files). It is planned to later implement the
 # function to filter the selected files with a regex.
 
-import os
+import os, glob
 
 def getFilelist(pathToFolder):
     files = os.listdir(pathToFolder)
     files.sort()
     res = []
 
-    for i in files:
-        if(i[0]=="."): continue
-        res.append(os.path.join(pathToFolder, i))
+    res.extend(glob.glob(os.path.join(pathToFolder,"*.[fF][iI][tT][sS]")))
+    res.extend(glob.glob(os.path.join(pathToFolder,"*.[fF][iI][tT]")))
+
+    print("found", len(res), "files")
 
     return res
 
