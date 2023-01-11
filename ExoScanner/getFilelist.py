@@ -12,6 +12,8 @@ def getFilelist(pathToFolder):
     res.extend(glob.glob(os.path.join(pathToFolder,"*.[fF][iI][tT][sS]")))
     res.extend(glob.glob(os.path.join(pathToFolder,"*.[fF][iI][tT]")))
 
+    res.sort()
+
     print("found", len(res), "files")
 
     return res
