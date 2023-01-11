@@ -8,6 +8,8 @@ from astropy.io import fits
 def getTimeOfObservation(filename):
     if (os.path.splitext(filename)[1].lower() == '.fits' or os.path.splitext(filename)[1].lower() == '.fit'):
         with fits.open(filename) as hdu:
-            return hdu[0].header["DATE-OBS"]
+            try:
+                return hdu[0].header["DATE-OBS"]
+            except:
+                return -1
 
-    raise Exception("File type not supported!")
