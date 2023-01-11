@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from ExoScanner import myAlgorithms
 import os
 
-def output(lightcurves, times, analysis, count=10):
+def output(lightcurves, times, imageNumber, analysis, count=10):
     count = min(count, len(analysis))
     analysis = sorted(analysis, key=lambda d: d['score'], reverse=True)
 
@@ -31,7 +31,10 @@ def output(lightcurves, times, analysis, count=10):
 
         plt.subplots_adjust(top=0.8)
 
-        plt.xlabel("time (julian date)")
+        if imageNumber:
+            plt.xlabel("time (image number)")
+        else:
+            plt.xlabel("time (julian date)")
         plt.ylabel("brightness (normalized flux)")
 
         plt.savefig("results/lightcurves/candidate-" + str(i) + ".png")
