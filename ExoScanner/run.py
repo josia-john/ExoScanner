@@ -29,17 +29,10 @@ def run(pathToLights):
     times = []  # get observation-times for the included images
     for i in axis:
         times.append(getTimeOfObservation(files[i]))
-
-    imageNumber = 0
-
-    if not -1 in times:
-        times = Time(times, format='isot', scale='utc').jd
-    else:
-        times = axis
-        imageNumber = 1
+    times = Time(times, format='isot', scale='utc').jd
 
     for i in range(len(analysis)):  # add index and coordinates in the first image to the analysis of each star
         analysis[i]["index"] = i
         analysis[i]["coordinates"] = (round(catalogs[0]["xcentroid"][stars[i]]),round(catalogs[0]["ycentroid"][stars[i]]))
         
-    output(lightCurves, times, imageNumber, analysis)    # generate output
+    output(lightCurves, times, analysis)    # generate output
