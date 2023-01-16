@@ -199,6 +199,9 @@ def mergeNext(mergedCatalog, newCatalog, allowedError=3):
 
 def mergeCatalogs(catalogs):
     transitions = []
+    transitions.append([])
+    for i in range(len(catalogs[0])):
+        transitions[0].append(i)
     for i in range(1, len(catalogs)):
         transitions.append(mergeNext(catalogs[0], catalogs[i][:]))
         catalogs[i].sort("id")

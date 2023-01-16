@@ -8,6 +8,8 @@ def output(lightcurves, times, imageNumber, analysis, count=10):
     count = min(count, len(analysis))
     analysis = sorted(analysis, key=lambda d: d['score'], reverse=True)
 
+    print(count, "canditates will be returned. Default is 10.")
+
     try:
         os.makedirs("results/lightcurves")
     except:
@@ -17,7 +19,7 @@ def output(lightcurves, times, imageNumber, analysis, count=10):
         lc = lightcurves[analysis[i]["index"]]
         plt.scatter(times, lc, marker='.', color="black")
 
-        WS = round(len(lc)/10) + 1
+        WS = 20
         rolling = myAlgorithms.rolling(lc, WS)
         plt.plot(times[int(WS/2):len(rolling)+int(WS/2)], rolling, color="blue")
 

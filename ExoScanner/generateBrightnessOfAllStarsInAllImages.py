@@ -77,7 +77,7 @@ def getBrightnessInOneStar(files, catalogs, transitions, i, radius=8):
     starsInImage = []
 
     for currentStarIndex in range(0, len(catalogs[0])):
-        indexInCatalog = transitions[i-1][currentStarIndex]
+        indexInCatalog = transitions[i][currentStarIndex]
         if indexInCatalog == -1:
             starsInImage.append(0)
             continue
@@ -91,6 +91,6 @@ def getBrightnessInOneStar(files, catalogs, transitions, i, radius=8):
 
 def generateBrightnessOfAllStarsInAllImages(files, catalogs, transitions, debug=False, radius=8):
     with Pool() as mp_pool:
-        brightness = mp_pool.starmap(getBrightnessInOneStar, [(files, catalogs, transitions, i, radius) for i in range(1, len(files))])
+        brightness = mp_pool.starmap(getBrightnessInOneStar, [(files, catalogs, transitions, i, radius) for i in range(0, len(files))])
 
     return brightness
