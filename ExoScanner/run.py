@@ -19,12 +19,12 @@ def run(pathToLights):
 
     catalogs, files = generateCatalogs(files)   # get catalogs and ignore files with less than 20 stars
 
-    if (len(catalogs)<25):
-        print("ERROR: At least 25 files are required. Only", len(files), "usable files were provided.")
-        exit(0)
-
     brightness = generateBrightnessOfAllStarsInAllImages(files, catalogs, mergeCatalogs(catalogs))  # get brightness
     brightness, axis, stars = cleanUpData(brightness)   # remove bad images and bad stars
+
+    if (len(axis)<25):
+        print("ERROR: At least 25 files are required. Only", len(axis), "usable files were provided.")
+        exit(0)
 
     lightCurves = generateLightCurves(brightness)   # get Lightcurves
 
