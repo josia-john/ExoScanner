@@ -29,7 +29,7 @@ def generateCatalogs(files):
     newFiles=[]
 
     for i in range(len(files)):
-        if len(res[i]) < 20: continue
+        if res[i] in None or len(res[i]) < 20: continue
         newRes.append(res[i])
         newFiles.append(files[i])
 
