@@ -71,7 +71,7 @@ def binarySearchTriangles(triangles, value):
     
     return l
 
-def firstMatchingUsingTriangles(mergedCatalog, newCatalog, N, epsilon=0.02):
+def firstMatchingUsingTriangles(mergedCatalog, newCatalog, N, epsilon=0.004):
     votes = [[0 for i in range(N)] for i in range(N)]
     oldTriangles = findTriangles(mergedCatalog, N)
     oldTriangles.sort()
@@ -81,7 +81,7 @@ def firstMatchingUsingTriangles(mergedCatalog, newCatalog, N, epsilon=0.02):
 
     # Optimize later with BS (if necessary...)
     for i in range(0, len(triangles)):
-        for j in range(binarySearchTriangles(oldTriangles, triangles[i][0]-epsilon), binarySearchTriangles(oldTriangles, triangles[i][0]+epsilon)):
+        for j in range(binarySearchTriangles(oldTriangles, triangles[i][0]-epsilon), binarySearchTriangles(oldTriangles, triangles[i][0]+epsilon)+1):
             if (((triangles[i][0]-oldTriangles[j][0])**2) + ((triangles[i][1]-oldTriangles[j][1])**2)) < (epsilon**2):
                 for x in range(2, 5):
                     for y in range(2, 5):
@@ -178,7 +178,7 @@ def mergeNext(mergedCatalog, newCatalog, allowedError=3):
     for i in range(len(mergedCatalog)):
         bestDist = allowedError*allowedError+0.1
         index = -1
-        for j in range(binarySearchCatalog(newCatalog, mergedCatalog[i]["xcentroid"]-allowedError, translation), binarySearchCatalog(newCatalog, mergedCatalog[i]["xcentroid"]+allowedError, translation)):
+        for j in range(binarySearchCatalog(newCatalog, mergedCatalog[i]["xcentroid"]-allowedError, translation), binarySearchCatalog(newCatalog, mergedCatalog[i]["xcentroid"]+allowedError, translation)+1):
             mergedX, mergedY = [mergedCatalog[i]["xcentroid"], mergedCatalog[i]["ycentroid"]]
             newX, newY = [newCatalog[j]["xcentroid"], newCatalog[j]["ycentroid"], 1] @ translation
             dist = (newX-mergedX)**2 + (newY-mergedY)**2
