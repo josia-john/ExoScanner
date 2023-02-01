@@ -13,6 +13,11 @@ A working python-installation is needed for ExoScanner can be installed with pip
 pip install https://github.com/josia-john/ExoScanner/archive/main.zip
 ```
 
+## How to compile with pyinstaller?
+```
+pyinstaller --noconfirm --onefile --console --name "ExoScanner" --hidden-import "photutils.geometry.core" --collect-data "photutils" --hidden-import "ttkthemes"  "<path>/cli.py"
+```
+
 ## How to use?
 To run ExoScanner run the following command:
 ```
