@@ -23,7 +23,8 @@ def run(pathToLights):
     brightness, axis, stars = cleanUpData(brightness)   # remove bad images and bad stars
 
     if (len(axis)<25):
-        print("ERROR: At least 25 files are required. Only", len(axis), "usable files were provided.")
+        pass
+        # print("ERROR: At least 25 files are required. Only", len(axis), "usable files were provided.")
         exit(0)
 
     lightCurves = generateLightCurves(brightness)   # get Lightcurves
@@ -45,5 +46,5 @@ def run(pathToLights):
     for i in range(len(analysis)):  # add index and coordinates in the first image to the analysis of each star
         analysis[i]["index"] = i
         analysis[i]["coordinates"] = (round(catalogs[0]["xcentroid"][stars[i]]),round(catalogs[0]["ycentroid"][stars[i]]))
-        
+
     output(lightCurves, times, imageNumber, analysis)    # generate output

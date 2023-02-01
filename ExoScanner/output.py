@@ -1,6 +1,7 @@
 # The function output() generates the output.
 
 import matplotlib.pyplot as plt
+import threading
 from ExoScanner import myAlgorithms
 import os
 
@@ -16,6 +17,7 @@ def output(lightcurves, times, imageNumber, analysis, count=10):
         print("directory results/lightcurves already exists, continuing anyway...")
 
     for i in range(count):
+
         lc = lightcurves[analysis[i]["index"]]
         plt.scatter(times, lc, marker='.', color="black")
 
