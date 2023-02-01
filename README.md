@@ -14,6 +14,7 @@ pip install https://github.com/josia-john/ExoScanner/archive/main.zip
 ```
 
 ## How to compile with pyinstaller?
+Be sure to replace <path> with the location to the cli.py file
 ```
 pyinstaller --noconfirm --onefile --console --name "ExoScanner" --hidden-import "photutils.geometry.core" --collect-data "photutils" --hidden-import "ttkthemes"  "<path>/cli.py"
 ```
