@@ -1,5 +1,5 @@
 # ExoScanner
-A CLI-tool to analyze an image-series for exoplanet transits.
+This is a Fork of ExoScanner with a GUI to analyze an image-series for exoplanet transits.
 
 ## What is this?
 ExoScanner is a software which can analyze image-series recorded by amateurs
@@ -20,11 +20,8 @@ pyinstaller --noconfirm --onefile --console --name "ExoScanner" --hidden-import 
 ```
 
 ## How to use?
-To run ExoScanner run the following command:
-```
-python -m ExoScanner <path>
-```
-with `<path>` being the path to a folder with the to be analyzed light-frames.
+Currently, ExoScanner only supports .fits files. Enter the directory location of the files 
+to be processed and then click submit. 
 
 When the light-frames are sorted by name, they should also be sorted by observation-time.
 
