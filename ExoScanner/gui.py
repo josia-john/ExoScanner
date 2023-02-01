@@ -1,4 +1,5 @@
 import tkinter.ttk as ttk
+from ttkthemes import ThemedTk as tk
 
 from ExoScanner.run import run
 
@@ -13,3 +14,11 @@ class Window:
 
         submit = ttk.Button(master, text="Submit", command=lambda: run(path_to_files.get()))
         submit.pack(anchor="e", padx=15, pady=15)
+
+def start_gui():
+    root = tk(theme="adapta", themebg=True)
+    root.geometry("400x100")
+    root.title("ExoScanner")
+    window = Window(root)
+
+    root.mainloop()

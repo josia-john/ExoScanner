@@ -1,7 +1,6 @@
 # The function output() generates the output.
 
 import matplotlib.pyplot as plt
-import threading
 from ExoScanner import myAlgorithms
 import os
 

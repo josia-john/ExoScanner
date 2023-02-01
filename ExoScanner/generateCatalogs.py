@@ -1,7 +1,6 @@
 # This file is responsible for generating a catalog for each image in the
 # sequence, each catalog containing all the stars in the image. This is done
 # using the algorithm "DAOPHOT / DAOFIND"
-import multiprocessing
 
 from astropy.stats import sigma_clipped_stats
 from photutils.detection import DAOStarFinder
