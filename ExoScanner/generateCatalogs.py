@@ -35,3 +35,4 @@ def generateCatalogs(files):
 
     return newRes, newFiles
 
+

@@ -10,11 +10,12 @@ from ExoScanner.analyzeLightCurves import analyzeLightCurves
 from ExoScanner.getTimeOfObservation import getTimeOfObservation
 from ExoScanner.generateLightCurves import generateLightCurves
 from ExoScanner.output import output
+from ExoScanner.config import OUTPUT_FILE_LOCATION
 
 from astropy.time import Time
 
 
-def run(pathToLights):
+def run(pathToLights, output_location=OUTPUT_FILE_LOCATION):
     files = getFilelist(pathToLights)   # get all files
 
     catalogs, files = generateCatalogs(files)   # get catalogs and ignore files with less than 20 stars
@@ -45,5 +46,5 @@ def run(pathToLights):
     for i in range(len(analysis)):  # add index and coordinates in the first image to the analysis of each star
         analysis[i]["index"] = i
         analysis[i]["coordinates"] = (round(catalogs[0]["xcentroid"][stars[i]]),round(catalogs[0]["ycentroid"][stars[i]]))
-        
-    output(lightCurves, times, imageNumber, analysis)    # generate output
+
+    output(lightCurves, times, imageNumber, analysis, output_location)    # generate output

@@ -1,0 +1,8 @@
+setuptools~=60.2.0
+ExoScanner~=0.1.0
+astropy~=5.2.1
+matplotlib~=3.6.3
+ttkthemes~=3.2.2
+numpy~=1.24.1
+photutils~=1.6.0
+statistics~=1.0.3.5
