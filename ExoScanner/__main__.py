@@ -11,7 +11,7 @@ def main():
         start_gui()
     else:
         if len(sys.argv) > 2:
-            run(sys.argv[1], output_location=sys.argv[3])
+            run(sys.argv[1], output_location=sys.argv[2])
         else:
             run(sys.argv[1])
 

@@ -1,1 +1,0 @@
-OUTPUT_FILE_LOCATION = "results/lightcurves"

@@ -10,12 +10,11 @@ from ExoScanner.analyzeLightCurves import analyzeLightCurves
 from ExoScanner.getTimeOfObservation import getTimeOfObservation
 from ExoScanner.generateLightCurves import generateLightCurves
 from ExoScanner.output import output
-from ExoScanner.config import OUTPUT_FILE_LOCATION
 
 from astropy.time import Time
 
 
-def run(pathToLights, output_location=OUTPUT_FILE_LOCATION):
+def run(pathToLights, output_location="results/lightcurves"):
     files = getFilelist(pathToLights)   # get all files
 
     catalogs, files = generateCatalogs(files)   # get catalogs and ignore files with less than 20 stars
