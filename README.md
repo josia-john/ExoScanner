@@ -10,6 +10,7 @@ I am publishing it. I hope to be able to maintain the program.
 ## How to install?
 
 The program can be downloaded as a .exe, runnable on any windows machine (recommended):
+
 TODO: Add link to .exe
 
 Or, if you want to install ExoScanner as a python-package, ExoScanner can be installed with pip:
@@ -41,6 +42,13 @@ python -m ExoScanner <path> <output>
 with `<path>` being the path to a folder with the to be analyzed light-frames.
 and `<output>` being the path to the folder where the output images should be
 saved.
+
+On mac, you can install ExoScanner as a python-package. Then you can run the following command to
+run ExoScanner with a GUI:
+
+```
+python -m ExoScanner
+```
 
 ## How to compile with pyinstaller?
 The program can be "compiled" into a .exe file using pyinstaller: Be sure to replace "\<path>\" with the location to the cli.py file
