@@ -8,8 +8,10 @@ from ExoScanner.run import run
 
 def main():
     if len(sys.argv) == 1:
+        print("starting GUI...")
         start_gui()
     else:
+        print("running ExoScanner with given parameters...")
         if len(sys.argv) > 2:
             run(sys.argv[1], output_location=sys.argv[2])
         else:

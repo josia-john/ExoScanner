@@ -15,19 +15,28 @@ from astropy.time import Time
 
 
 def run(pathToLights, output_location="results/lightcurves"):
+    print("finding files...")
     files = getFilelist(pathToLights)   # get all files
+    print("found", len(files), "files")
 
+    print("finding stars in all images")
     catalogs, files = generateCatalogs(files)   # get catalogs and ignore files with less than 20 stars
 
+    print("calculate brightness of stars")
     brightness = generateBrightnessOfAllStarsInAllImages(files, catalogs, mergeCatalogs(catalogs))  # get brightness
     brightness, axis, stars = cleanUpData(brightness)   # remove bad images and bad stars
+
+    print(len(axis), "files are usable. The others will be ignored.")
+    print(len(axis[0]), "stars are usable. The others will be ignored.")
 
     if (len(axis)<25):
         print("ERROR: At least 25 files are required. Only", len(axis), "usable files were provided.")
         exit(0)
 
+    print("generate all lightcurves by comparing the brightness of different stars")
     lightCurves = generateLightCurves(brightness)   # get Lightcurves
 
+    print("analyzing the lightcurves")
     analysis = analyzeLightCurves(lightCurves)
 
     times = []  # get observation-times for the included images
@@ -46,4 +55,6 @@ def run(pathToLights, output_location="results/lightcurves"):
         analysis[i]["index"] = i
         analysis[i]["coordinates"] = (round(catalogs[0]["xcentroid"][stars[i]]),round(catalogs[0]["ycentroid"][stars[i]]))
 
+    print("writing output files")
     output(lightCurves, times, imageNumber, analysis, output_location)    # generate output
+    print("done")

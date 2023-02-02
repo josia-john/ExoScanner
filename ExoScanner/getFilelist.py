@@ -14,7 +14,5 @@ def getFilelist(pathToFolder):
 
     res.sort()
 
-    print("found", len(res), "files")
-
     return res
 
