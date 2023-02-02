@@ -27,7 +27,7 @@ def run(pathToLights, output_location="results/lightcurves"):
     brightness, axis, stars = cleanUpData(brightness)   # remove bad images and bad stars
 
     print(len(axis), "files are usable. The others will be ignored.")
-    print(len(axis[0]), "stars are usable. The others will be ignored.")
+    print(len(stars), "stars are usable. The others will be ignored.")
 
     if (len(axis)<25):
         print("ERROR: At least 25 files are required. Only", len(axis), "usable files were provided.")

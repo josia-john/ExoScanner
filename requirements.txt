@@ -6,3 +6,4 @@ ttkthemes~=3.2.2
 numpy~=1.24.1
 photutils~=1.6.0
 statistics~=1.0.3.5
+scipy~=1.10.0
