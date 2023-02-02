@@ -72,5 +72,4 @@ def start_gui():
     master = tk(theme="black", themebg=True)
     master.title("ExoScanner")
     app = Window(master)
-    master.iconphoto(False, PhotoImage(file=r"C:\Users\flesh\PycharmProjects\ExoScanner\images\icon.png"))
     master.mainloop()
