@@ -25,7 +25,7 @@ to be processed and then click submit.
 
 When the light-frames are sorted by name, they should also be sorted by observation-time.
 
-Exoscanner generates a folder `results/` in the current directory, make sure it
+Exoscanner generates a folder `results/` in the current directory or the specified output, make sure it
 doesn't already exist, or that there is nothing important in it. There it stores
 the results. It generates 10 images like the following, of the stars it thinks
 it's most likely that a transit occured.
