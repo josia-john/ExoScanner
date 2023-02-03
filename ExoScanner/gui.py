@@ -69,7 +69,12 @@ class Window(Frame):
 
 
 def start_gui():
+    absolute_path = os.path.dirname(__file__)
+    relative_path = "Exoscanner_logo.png"
+    full_path = os.path.join(absolute_path, relative_path)
+
     master = tk(theme="black", themebg=True)
     master.title("ExoScanner")
+    master.iconphoto(False, PhotoImage(file=full_path))
     app = Window(master)
     master.mainloop()

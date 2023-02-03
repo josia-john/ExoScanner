@@ -53,7 +53,7 @@ python -m ExoScanner
 ## How to compile with pyinstaller?
 The program can be "compiled" into a .exe file using pyinstaller: Be sure to replace "\<path>\" with the location to the cli.py file
 ```
-pyinstaller --noconfirm --onefile --console --name "ExoScanner" --hidden-import "photutils.geometry.core" --collect-data "photutils" --hidden-import "ttkthemes"  "<path>/cli.py"
+pyinstaller --noconfirm --onefile --console --name "ExoScanner" --hidden-import "photutils.geometry.core" --collect-data "photutils" --hidden-import "ttkthemes" --icon "<path>/images/Exoscanner_logo.ico" --add-data "<path>/ExoScanner/Exoscanner_logo.png;Exoscanner" "<path>/cli.py"
 ```
 
 ## FAQ
