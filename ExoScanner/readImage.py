@@ -23,7 +23,7 @@ def readImage(filename, binning = 1):
     if (os.path.splitext(filename)[1].lower() == '.fits' or os.path.splitext(filename)[1].lower() == '.fit'):
         with fits.open(filename) as hdu:
             rgb = list(hdu[0].data)
-            rgb.reverse()
+            # rgb.reverse() <- Use this when you want the coordinates to be in GIMP-format.
 
     else:
         raise ValueError("your file has a not supported type!")
