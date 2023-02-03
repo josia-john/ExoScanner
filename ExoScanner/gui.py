@@ -6,6 +6,9 @@ from PIL import Image, ImageTk
 
 from ExoScanner.run import run
 
+import ExoScanner.myAlgorithms 
+
+import sys
 
 class Window(Frame):
 
@@ -47,7 +50,7 @@ class Window(Frame):
 
     def on_open(self):
         file = filedialog.askopenfilename()
-        os.startfile(file)
+        ExoScanner.myAlgorithms.open_file(file)
 
     def set_input_file_location(self):
         path = filedialog.askdirectory()
@@ -65,7 +68,7 @@ class Window(Frame):
                 run(path_to_files, output_location=output_location)
 
     def exitProgram(self):
-        exit()
+        sys.exit()
 
 
 def start_gui():

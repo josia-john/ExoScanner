@@ -13,6 +13,8 @@ from ExoScanner.output import output
 
 from astropy.time import Time
 
+import ExoScanner.myAlgorithms
+
 
 def run(pathToLights, output_location="results/lightcurves"):
     print("finding files...")
@@ -57,4 +59,5 @@ def run(pathToLights, output_location="results/lightcurves"):
 
     print("writing output files")
     output(lightCurves, times, imageNumber, analysis, output_location)    # generate output
+    ExoScanner.myAlgorithms.open_file(output_location)
     print("done")
