@@ -11,7 +11,7 @@ I am publishing it. I hope to be able to maintain the program.
 
 The program can be downloaded as a .exe, runnable on any windows machine (recommended):
 
-TODO: Add link to .exe
+The newest version can always be downloaded from here: [releases](https://github.com/josia-john/ExoScanner/releases)
 
 Or, if you want to install ExoScanner as a python-package, ExoScanner can be installed with pip:
 ```
