@@ -11,15 +11,24 @@ from ExoScanner.getTimeOfObservation import getTimeOfObservation
 from ExoScanner.generateLightCurves import generateLightCurves
 from ExoScanner.output import output
 
+import ExoScanner.config
+
 from astropy.time import Time
 
 import ExoScanner.myAlgorithms
 
 
-def run(pathToLights, output_location="results/lightcurves"):
+def run():
+    pathToLights = ExoScanner.config.config["input_path"]
+    output_location = ExoScanner.config.config["output_path"]
+    
     print("finding files...")
     files = getFilelist(pathToLights)   # get all files
     print("found", len(files), "files")
+
+    if (len(files)<25):
+        print("ERROR: At least 25 files are required.")
+        exit(0)
 
     print("finding stars in all images")
     catalogs, files = generateCatalogs(files)   # get catalogs and ignore files with less than 20 stars

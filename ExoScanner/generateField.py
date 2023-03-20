@@ -4,8 +4,11 @@
 # calculating the brightness of one star, as it would not make sense to look at
 # the whole image when calculating the brightness of just one star.
 
+import ExoScanner.config
 
-def generateField(rgb, targetX, targetY, radius):
+
+def generateField(rgb, targetX, targetY):
+    radius = ExoScanner.config.config["boxSize"]
     field = []
     for i in range(round(targetY-radius), round(targetY+radius)):
         field.append([])
