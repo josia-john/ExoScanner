@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='ExoScanner',
-    version='0.2.0',    
+    version='0.2.1',    
     description='A program to analyze an image-series for exoplanet transits.',
     url='https://github.com/josia-john/ExoScanner',
     author='Josia John',
