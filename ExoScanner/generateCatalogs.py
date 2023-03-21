@@ -8,6 +8,7 @@ from ExoScanner.readImage import readImage
 import numpy as np
 from multiprocessing import Pool
 
+import ExoScanner.config
 
 def generateCatalogForOneImage(file):
     data = readImage(file)
@@ -15,7 +16,7 @@ def generateCatalogForOneImage(file):
     mean, median, std = sigma_clipped_stats(data, sigma=3.0)
     box = np.ones([len(data), len(data[0])], dtype=bool)
     box[border:len(data)-border, border:len(data[0])-border] = False
-    daofind = DAOStarFinder(fwhm=4.0, threshold=20*std)
+    daofind = DAOStarFinder(fwhm=ExoScanner.config.params["FWHM"], threshold=ExoScanner.config.params["starThreshold"]*std)
     sources = daofind.find_stars(data-median, mask=box)
 
     return sources

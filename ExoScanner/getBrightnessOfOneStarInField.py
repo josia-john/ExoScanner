@@ -23,7 +23,7 @@ def getMeanAndDeviation(starRegion, debug=False):
             distSquared=(i-mean[0])**2+(j-mean[1])**2
             s+=distSquared*starRegion[i][j]
     s/=sum
-    s = np.sqrt(s)
+    s = np.sqrt(max(0, s))     # Negative s can occur because of background-subtraction
 
     return mean,s
 

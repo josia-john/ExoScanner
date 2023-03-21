@@ -12,6 +12,8 @@ from ExoScanner.myAlgorithms import rolling
 import numpy as np
 from multiprocessing import Pool
 
+import ExoScanner.config
+
 def cleanUpData(brightness):
     brightness = np.array(brightness)
     removeStars = []
@@ -21,7 +23,7 @@ def cleanUpData(brightness):
             if brightness[i][star] == 0:
                 percentageStar = np.count_nonzero(brightness[:, star]==0)/len(brightness)
                 percentageImage = np.count_nonzero(brightness[i]==0)/len(brightness[0])
-                if percentageStar*2 > percentageImage or i == 0:
+                if percentageStar*ExoScanner.config.params["StarImageRatio"] > percentageImage or i == 0:
                     removeStars.append(star)
                 else:
                     removeImages.append(i)
@@ -71,7 +73,7 @@ def getBrightnessScoreOfStars(brightness):
 
 
 
-def getBrightnessInOneStar(files, catalogs, transitions, i, radius=8):
+def getBrightnessInOneStar(files, catalogs, transitions, i):
     rgb = readImage(files[i])
 
     starsInImage = []
@@ -82,7 +84,7 @@ def getBrightnessInOneStar(files, catalogs, transitions, i, radius=8):
             starsInImage.append(0)
             continue
 
-        field = generateField(rgb, catalogs[i]["xcentroid"][indexInCatalog], catalogs[i]["ycentroid"][indexInCatalog], 8)
+        field = generateField(rgb, catalogs[i]["xcentroid"][indexInCatalog], catalogs[i]["ycentroid"][indexInCatalog])
         starsInImage.append(getBrightnessOfOneStarInField(field))
 
     return starsInImage
@@ -91,6 +93,6 @@ def getBrightnessInOneStar(files, catalogs, transitions, i, radius=8):
 
 def generateBrightnessOfAllStarsInAllImages(files, catalogs, transitions, debug=False, radius=8):
     with Pool() as mp_pool:
-        brightness = mp_pool.starmap(getBrightnessInOneStar, [(files, catalogs, transitions, i, radius) for i in range(0, len(files))])
+        brightness = mp_pool.starmap(getBrightnessInOneStar, [(files, catalogs, transitions, i) for i in range(0, len(files))])
 
     return brightness
