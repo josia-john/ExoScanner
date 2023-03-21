@@ -16,7 +16,7 @@ def generateCatalogForOneImage(file):
     mean, median, std = sigma_clipped_stats(data, sigma=3.0)
     box = np.ones([len(data), len(data[0])], dtype=bool)
     box[border:len(data)-border, border:len(data[0])-border] = False
-    daofind = DAOStarFinder(fwhm=ExoScanner.config.config["FWHM"], threshold=ExoScanner.config.config["starThreshold"]*std)
+    daofind = DAOStarFinder(fwhm=ExoScanner.config.params["FWHM"], threshold=ExoScanner.config.params["starThreshold"]*std)
     sources = daofind.find_stars(data-median, mask=box)
 
     return sources

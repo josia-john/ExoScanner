@@ -8,7 +8,7 @@ import ExoScanner.config
 
 
 def generateField(rgb, targetX, targetY):
-    radius = ExoScanner.config.config["boxSize"]
+    radius = ExoScanner.config.params["boxSize"]
     field = []
     for i in range(round(targetY-radius), round(targetY+radius)):
         field.append([])

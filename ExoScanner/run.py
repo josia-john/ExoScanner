@@ -19,8 +19,8 @@ import ExoScanner.myAlgorithms
 
 
 def run():
-    pathToLights = ExoScanner.config.config["input_path"]
-    output_location = ExoScanner.config.config["output_path"]
+    pathToLights = ExoScanner.config.params["input_path"]
+    output_location = ExoScanner.config.params["output_path"]
     
     print("finding files...")
     files = getFilelist(pathToLights)   # get all files
