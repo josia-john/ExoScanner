@@ -5,18 +5,22 @@ import sys
 from ExoScanner.gui import start_gui
 from ExoScanner.run import run
 
+import ExoScanner.config
 
 def main():
     if len(sys.argv) == 1:
         print("starting GUI...")
         start_gui()
     else:
-        print("running ExoScanner with given parameters...")
+        print("running ExoScanner with given parameters...\nit is recommended to use ExoScanner with the provided GUI...")
         if len(sys.argv) > 2:
-            run(sys.argv[1], output_location=sys.argv[2])
+            ExoScanner.config.params["input_path"] = sys.argv[1]
+            ExoScanner.config.params["output_path"] = sys.argv[2]
+            run()
         else:
-            run(sys.argv[1])
-
+            ExoScanner.config.params["input_path"] = sys.argv[1]
+            ExoScanner.config.params["output_path"] = "results/lightcurves"
+            run()
 
 if __name__ == "__main__":
     main()
