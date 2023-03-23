@@ -44,6 +44,10 @@ def run():
         print("ERROR: At least 25 files are required. Only", len(axis), "usable files were provided.")
         exit(0)
 
+    if (len(stars)<5):
+        print("ERROR: At least 5 stars are required. Only", len(stars), "usable stars were found.")
+        exit(0)
+
     print("generate all lightcurves by comparing the brightness of different stars")
     lightCurves = generateLightCurves(brightness)   # get Lightcurves
 

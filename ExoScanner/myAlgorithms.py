@@ -7,12 +7,15 @@ import os, sys, subprocess
 def rolling(numbers, window_size):
     i = 0
     moving_averages = []
+    this_window = sum(numbers[0:window_size])
     while i < len(numbers) - window_size:
-        this_window = numbers[i : i + window_size]
+        moving_averages.append(this_window/window_size)
 
-        window_average = sum(this_window) / window_size
-        moving_averages.append(window_average)
+        this_window += numbers[i+window_size]
+        this_window -= numbers[i]
         i += 1
+
+    moving_averages.append(this_window/window_size)
 
     return moving_averages
 
