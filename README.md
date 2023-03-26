@@ -1,6 +1,8 @@
 # ExoScanner
 The program ExoScanner (now available even with a GUI) is able to analyze an image-series for exoplanet transits.
 
+Join our Discord now: [https://discord.gg/cnBWgGBu4X](https://discord.gg/cnBWgGBu4X)
+
 ## What is this?
 ExoScanner is a software which can analyze image-series recorded by amateurs
 with the goal of detecting exoplanet-transits in them. The project started as

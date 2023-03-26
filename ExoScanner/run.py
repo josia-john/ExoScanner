@@ -9,7 +9,9 @@ from ExoScanner.mergeCatalogs import mergeCatalogs
 from ExoScanner.analyzeLightCurves import analyzeLightCurves
 from ExoScanner.getTimeOfObservation import getTimeOfObservation
 from ExoScanner.generateLightCurves import generateLightCurves
-from ExoScanner.output import output
+from ExoScanner.output import outputExoplanet
+from ExoScanner.output import outputVariable
+
 
 import ExoScanner.config
 
@@ -44,6 +46,10 @@ def run():
         print("ERROR: At least 25 files are required. Only", len(axis), "usable files were provided.")
         exit(0)
 
+    if (len(stars)<5):
+        print("ERROR: At least 5 stars are required. Only", len(stars), "usable stars were found.")
+        exit(0)
+
     print("generate all lightcurves by comparing the brightness of different stars")
     lightCurves = generateLightCurves(brightness)   # get Lightcurves
 
@@ -67,6 +73,13 @@ def run():
         analysis[i]["coordinates"] = (round(catalogs[0]["xcentroid"][stars[i]]),round(catalogs[0]["ycentroid"][stars[i]]))
 
     print("writing output files")
-    output(lightCurves, times, imageNumber, analysis, output_location)    # generate output
+
+    if (ExoScanner.config.params["analysisMode"] == "variable"):
+        outputVariable(lightCurves, times, imageNumber, analysis, output_location)
+    elif (ExoScanner.config.params["analysisMode"] == "exoplanet"):
+        outputExoplanet(lightCurves, times, imageNumber, analysis, output_location)
+    else:
+        outputVariable(lightCurves, times, imageNumber, analysis, output_location)
+
     ExoScanner.myAlgorithms.open_file(output_location)
     print("done")

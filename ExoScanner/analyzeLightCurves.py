@@ -7,6 +7,11 @@
 import statistics
 from multiprocessing import Pool
 
+import numpy as np
+
+import ExoScanner.myAlgorithms
+import ExoScanner.config
+
 def fitStepCurve(l, r, curve):
     valuesIn = []
     valuesOut = []
@@ -65,6 +70,46 @@ def analyzeOneLightCurve(curve, minLength=10):
     return d
 
 
+def analyzeOneLightCurveInterest(curve):
+    rolled = ExoScanner.myAlgorithms.rolling(curve, max(1,int(len(curve)/5)))
+
+    depth = (max(rolled)-min(rolled))/min(rolled)
+
+
+    lostValues = len(curve)-len(rolled)
+
+    remains = []
+
+    for i in range(0, len(rolled)):
+        remains.append((curve[i+int(lostValues/2)]-rolled[i]))
+
+    
+    remains = np.array(remains)
+
+    std = np.std(remains)
+
+    std = std/min(rolled)
+
+    result = {
+        "score": depth / std,
+        "depth": depth,
+        "error": std,
+        "dipFlux": None,
+        "normalFlux": None,
+        "startTime": None,
+        "endTime": None
+    }
+
+    return result
+
+
 def analyzeLightCurves(lightcurves):
     mp_pool = Pool()
-    return mp_pool.map(analyzeOneLightCurve, lightcurves)
+
+    if (ExoScanner.config.params["analysisMode"] == "variable"):
+        return mp_pool.map(analyzeOneLightCurveInterest, lightcurves)
+    if (ExoScanner.config.params["analysisMode"] == "exoplanet"):
+        return mp_pool.map(analyzeOneLightCurve, lightcurves)
+    
+    # default
+    return mp_pool.map(analyzeOneLightCurveInterest, lightcurves)
