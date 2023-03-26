@@ -54,6 +54,10 @@ class Window(Frame):
         self.param_box_size_brightness_calc = ttk.Entry()
         self.param_box_size_brightness_calc.insert(0, "8")
 
+        self.mode_label = ttk.Label(wraplength=500, text="Search for variable stars ('variable') or transits ('exoplanet'). Default is 'variable'")
+        self.mode = ttk.Combobox(values=["variable", "exoplanet"])
+        self.mode.insert(0, "variable")
+
         self.submit = ttk.Button(self.master, text="Submit",
                                  command=lambda: self.on_submit())
 
@@ -73,6 +77,9 @@ class Window(Frame):
         self.param_star_image_ratio.grid(column=0, row=10, padx=5, ipady=5, ipadx=100)
         self.param_box_size_brightness_calc_label.grid(column=0, row=11, padx=5)
         self.param_box_size_brightness_calc.grid(column=0, row=12, padx=5, ipady=5, ipadx=100)
+        self.mode_label.grid(column=0, row=13, padx=5)
+        self.mode.grid(column=0, row=14, padx=5, ipady=5, ipadx=100)
+        
 
         self.submit.grid(column=1, row=4, padx=5, pady=25)
 
@@ -115,6 +122,10 @@ class Window(Frame):
             print("no box size provided, can't start ExoScanner!")
             return
         ExoScanner.config.params["boxSize"] = int(self.param_box_size_brightness_calc.get())
+        if self.mode.get() is None:
+            print("no mode provided, can't start ExoScanner")
+            return
+        ExoScanner.config.params["analysisMode"] = self.mode.get()
         
         self.submit["state"] = "disabled"
         run()
