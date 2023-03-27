@@ -17,7 +17,7 @@ The newest version can always be downloaded from here: [releases](https://github
 
 Or, if you want to install ExoScanner as a python-package, ExoScanner can be installed with pip:
 ```
-pip install https://github.com/josia-john/ExoScanner/archive/main.zip
+pip install ExoScanner
 ```
 
 ## How to use?
@@ -28,10 +28,12 @@ to be processed and then click submit.
 When the light-frames are sorted by name, they should also be sorted by observation-time.
 
 Exoscanner saves the output files in the output directory that was specified when running it.
-Make sure that there is nothing important there. It generates 10 images (like the one below), of the stars it thinks
-it's most likely that a transit occured.
+Make sure that there is nothing important there. Depending on the mode, It generates 20 images (like the ones below),
+of the stars it thinks it's most likely that a transit occured or it think's is the most likely of
+being a variable star.
 
 ![example output](images/exampleOutput.png)
+![example output](images/exampleOutput2.png)
 
 An example data-set to test the software can be found here: 
 https://drive.google.com/drive/folders/13AZ1xhNR8qf8G5aFWLcC5ObRZvBCNXpz?usp=sharing

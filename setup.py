@@ -13,7 +13,8 @@ setup(
                       'astropy',
                       'statistics',
                       'photutils',
-                      'scipy'
+                      'scipy',
+                      'ttkthemes'
                       ],
 
     classifiers=[
