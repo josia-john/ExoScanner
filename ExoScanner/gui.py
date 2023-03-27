@@ -138,10 +138,15 @@ class Window(Frame):
 def start_gui():
     absolute_path = os.path.dirname(__file__)
     relative_path = "Exoscanner_logo.png"
+    relative_path2 = "ExoScanner_logo.png"
     full_path = os.path.join(absolute_path, relative_path)
+    full_path2 = os.path.join(absolute_path, relative_path2)
 
     master = tk(theme="black", themebg=True)
     master.title("ExoScanner")
-    master.iconphoto(False, PhotoImage(file=full_path))
+    try:
+        master.iconphoto(False, PhotoImage(file=full_path))
+    except:
+        master.iconphoto(False, PhotoImage(file=full_path2))
     app = Window(master)
     master.mainloop()
