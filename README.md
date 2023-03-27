@@ -17,7 +17,7 @@ The newest version can always be downloaded from here: [releases](https://github
 
 Or, if you want to install ExoScanner as a python-package, ExoScanner can be installed with pip:
 ```
-pip install https://github.com/josia-john/ExoScanner/archive/main.zip
+pip install ExoScanner
 ```
 
 ## How to use?
