@@ -134,6 +134,8 @@ class Window(Frame):
     def exitProgram(self):
         sys.exit()
 
+def on_closing():
+    sys.exit()
 
 def start_gui():
     absolute_path = os.path.dirname(__file__)
@@ -149,4 +151,5 @@ def start_gui():
     except:
         master.iconphoto(False, PhotoImage(file=full_path2))
     app = Window(master)
+    master.protocol("WM_DELETE_WINDOW", on_closing)
     master.mainloop()
