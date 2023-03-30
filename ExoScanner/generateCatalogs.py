@@ -23,7 +23,7 @@ def generateCatalogForOneImage(file):
 
 
 def generateCatalogs(files):
-    with Pool() as mp_pool:
+    with Pool(initializer=ExoScanner.config.setParams, initargs=[ExoScanner.config.params]) as mp_pool:
         res = mp_pool.map(generateCatalogForOneImage, files)
 
     newRes=[]

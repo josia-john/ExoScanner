@@ -104,7 +104,7 @@ def analyzeOneLightCurveInterest(curve):
 
 
 def analyzeLightCurves(lightcurves):
-    mp_pool = Pool()
+    mp_pool = Pool(initializer=ExoScanner.config.setParams, initargs=[ExoScanner.config.params])
 
     if (ExoScanner.config.params["analysisMode"] == "variable"):
         return mp_pool.map(analyzeOneLightCurveInterest, lightcurves)
