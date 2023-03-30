@@ -1,5 +1,5 @@
 setuptools~=60.2.0
-ExoScanner~=0.2.2
+ExoScanner~=0.2.3
 astropy~=5.2.1
 matplotlib~=3.6.3
 ttkthemes~=3.2.2

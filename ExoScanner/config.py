@@ -7,3 +7,8 @@ params = {
     "boxSize": 8,               # Box Size for determining brightness of a star
     "analysisMode": "variable"  # search for variable stars ("variable") or transits ("exoplanet")
 }
+
+
+def setParams(p):
+    global params
+    params = p
