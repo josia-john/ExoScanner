@@ -33,26 +33,28 @@ class Window(Frame):
         self.path_to_files_label = ttk.Label(wraplength=500, text="Input files directory:")
         self.path_to_files = ttk.Entry()
         self.browse_input = ttk.Button(self.master, text="browse", command=self.set_input_file_location)
+        self.path_to_files.insert(0,ExoScanner.config.params["input_path"])
 
         self.path_to_output_label = ttk.Label(wraplength=500, text="Destination:")
         self.path_to_output = ttk.Entry()
         self.browse_output = ttk.Button(self.master, text="browse", command=self.set_output_file_location)
+        self.path_to_output.insert(0,ExoScanner.config.params["output_path"])
 
         self.param_FWHM_label = ttk.Label(wraplength=500, text="FWHM (used for finding stars; default (4) should be ok)")
         self.param_FWHM = ttk.Entry()
-        self.param_FWHM.insert(0, "4")
+        self.param_FWHM.insert(0, ExoScanner.config.params["FWHM"])
 
         self.param_star_threshold_label = ttk.Label(wraplength=500, text="Star threshold (used for finding stars; default (15) should be ok)")
         self.param_star_threshold = ttk.Entry()
-        self.param_star_threshold.insert(0, "15")
+        self.param_star_threshold.insert(0, ExoScanner.config.params["starThreshold"])
 
         self.param_star_image_ratio_label = ttk.Label(wraplength=500, text="Star to image valuing ratio. (determines to throw away more stars (higher) or to throw away more images (lower); default (3) should be ok)")
         self.param_star_image_ratio = ttk.Entry()
-        self.param_star_image_ratio.insert(0, "3")
+        self.param_star_image_ratio.insert(0, ExoScanner.config.params["StarImageRatio"])
 
         self.param_box_size_brightness_calc_label = ttk.Label(wraplength=500, text="brightness calculation box size (determines the size of the box which is used to determine the brightness of a star; default (8) should be ok)")
         self.param_box_size_brightness_calc = ttk.Entry()
-        self.param_box_size_brightness_calc.insert(0, "8")
+        self.param_box_size_brightness_calc.insert(0, ExoScanner.config.params["boxSize"])
 
         self.mode_label = ttk.Label(wraplength=500, text="Search for variable stars ('variable') or transits ('exoplanet'). Default is 'variable'")
         self.mode = ttk.Combobox(values=["variable", "exoplanet"])
