@@ -44,15 +44,35 @@ def backgroundRemoval(starRegion):
         for j in i:
             values.append(j)
     values.sort()
-    background = values[int(len(values)/4)]
+    numbackground = int(len(values)/4)
+    background = 0
+    for k in range(numbackground):
+        background += values[k]
+    background /= numbackground
+    background2 = values[int(len(values)/4)]
+
+    #print("Background:")
+    #print(background)
+    #print(" Background2:")
+    #print(background2)
     for i in range(len(starRegion)):
         for j in range(len(starRegion[0])):
             starRegion[i][j]-=background
 
     return starRegion
 
+def saturationFinder(starRegion):
+    found = False
+    for i in starRegion:
+        for j in i:
+           found = found or j==1
+    return found
 
 def getBrightnessOfOneStarInField(starRegion, subdivide=3, debug=False):
+
+    if saturationFinder(starRegion):
+        return 0
+
     starRegion = backgroundRemoval(starRegion)
 
     starRegion = subdivideMatrix(starRegion, subdivide)
@@ -70,7 +90,6 @@ def getBrightnessOfOneStarInField(starRegion, subdivide=3, debug=False):
                 res += starRegion[i][j]
             # elif sqrt((i-mean[0])**2 + (j-mean[1])**2).real <= s*2.5+1.5:
             #     res += (1-((sqrt((i-mean[0])**2 + (j-mean[1])**2) - s)/1.5).real) * starRegion[i][j]
-
 
     return res
 
