@@ -19,9 +19,9 @@ def cleanUpData(brightness):
     removeStars = []
     removeImages = []
     for star in range(0, len(brightness[0])):
+        percentageStar = np.count_nonzero(brightness[:, star]==0)/len(brightness)
         for i in range(0, len(brightness)):
             if brightness[i][star] == 0:
-                percentageStar = np.count_nonzero(brightness[:, star]==0)/len(brightness)
                 percentageImage = np.count_nonzero(brightness[i]==0)/len(brightness[0])
                 if percentageStar*ExoScanner.config.params["StarImageRatio"] > percentageImage or i == 0:
                     removeStars.append(star)
