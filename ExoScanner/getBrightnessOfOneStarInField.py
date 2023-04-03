@@ -65,7 +65,7 @@ def saturationFinder(starRegion):
     found = False
     for i in starRegion:
         for j in i:
-           found = found or j==1
+           found = found or j>=0.99
     return found
 
 def getBrightnessOfOneStarInField(starRegion, subdivide=3, debug=False):
