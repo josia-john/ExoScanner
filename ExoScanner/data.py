@@ -1,0 +1,4 @@
+files = []
+brightness = []
+catalogs = []
+

@@ -1,6 +1,6 @@
 import os
 import tkinter.ttk as ttk
-from tkinter import PhotoImage, Menu, Frame, filedialog, END
+from tkinter import PhotoImage, Menu, Frame, filedialog, END, StringVar
 from ttkthemes import ThemedTk as tk
 from PIL import Image, ImageTk
 
@@ -10,6 +10,7 @@ import ExoScanner.myAlgorithms
 import ExoScanner.config 
 
 import sys
+from ExoScanner.data import brightness,files,catalogs
 
 class Window(Frame):
 
@@ -31,7 +32,9 @@ class Window(Frame):
 
         # initializing fields
         self.path_to_files_label = ttk.Label(wraplength=500, text="Input files directory:")
-        self.path_to_files = ttk.Entry()
+        svvx = StringVar()
+        svvx.trace("w", lambda name, index, mode, sv=svvx: self.on_detect_change())
+        self.path_to_files = ttk.Entry(textvariable=svvx)
         self.browse_input = ttk.Button(self.master, text="browse", command=self.set_input_file_location)
         self.path_to_files.insert(0,ExoScanner.config.params["input_path"])
 
@@ -41,11 +44,15 @@ class Window(Frame):
         self.path_to_output.insert(0,ExoScanner.config.params["output_path"])
 
         self.param_FWHM_label = ttk.Label(wraplength=500, text="FWHM (used for finding stars; default (4) should be ok)")
-        self.param_FWHM = ttk.Entry()
+        svv = StringVar()
+        svv.trace("w", lambda name, index, mode, sv=svv: self.on_detect_change())
+        self.param_FWHM = ttk.Entry(textvariable=svv)
         self.param_FWHM.insert(0, ExoScanner.config.params["FWHM"])
 
         self.param_star_threshold_label = ttk.Label(wraplength=500, text="Star threshold (used for finding stars; default (15) should be ok)")
-        self.param_star_threshold = ttk.Entry()
+        svvv = StringVar()
+        svvv.trace("w", lambda name, index, mode, sv=svvv: self.on_detect_change())
+        self.param_star_threshold = ttk.Entry(textvariable=svvv)
         self.param_star_threshold.insert(0, ExoScanner.config.params["starThreshold"])
 
         self.param_star_image_ratio_label = ttk.Label(wraplength=500, text="Star to image valuing ratio. (determines to throw away more stars (higher) or to throw away more images (lower); default (3) should be ok)")
@@ -53,7 +60,9 @@ class Window(Frame):
         self.param_star_image_ratio.insert(0, ExoScanner.config.params["StarImageRatio"])
 
         self.param_box_size_brightness_calc_label = ttk.Label(wraplength=500, text="brightness calculation box size (determines the size of the box which is used to determine the brightness of a star; default (8) should be ok)")
-        self.param_box_size_brightness_calc = ttk.Entry()
+        sv = StringVar()
+        sv.trace("w", lambda name, index, mode, sv=sv: self.on_box_change())
+        self.param_box_size_brightness_calc = ttk.Entry(textvariable=sv)
         self.param_box_size_brightness_calc.insert(0, ExoScanner.config.params["boxSize"])
 
         self.mode_label = ttk.Label(wraplength=500, text="Search for variable stars ('variable') or transits ('exoplanet'). Default is 'variable'")
@@ -75,10 +84,10 @@ class Window(Frame):
         self.param_FWHM.grid(column=0, row=6, padx=5, ipady=5, ipadx=100)
         self.param_star_threshold_label.grid(column=0, row=7, padx=5)
         self.param_star_threshold.grid(column=0, row=8, padx=5, ipady=5, ipadx=100)
-        self.param_star_image_ratio_label.grid(column=0, row=9, padx=5)
-        self.param_star_image_ratio.grid(column=0, row=10, padx=5, ipady=5, ipadx=100)
-        self.param_box_size_brightness_calc_label.grid(column=0, row=11, padx=5)
-        self.param_box_size_brightness_calc.grid(column=0, row=12, padx=5, ipady=5, ipadx=100)
+        self.param_box_size_brightness_calc_label.grid(column=0, row=9, padx=5)
+        self.param_box_size_brightness_calc.grid(column=0, row=10, padx=5, ipady=5, ipadx=100)
+        self.param_star_image_ratio_label.grid(column=0, row=11, padx=5)
+        self.param_star_image_ratio.grid(column=0, row=12, padx=5, ipady=5, ipadx=100)
         self.mode_label.grid(column=0, row=13, padx=5)
         self.mode.grid(column=0, row=14, padx=5, ipady=5, ipadx=100)
         
@@ -98,6 +107,14 @@ class Window(Frame):
         path = filedialog.askdirectory()
         self.path_to_output.delete(0, END)
         self.path_to_output.insert(0, path)
+
+    def on_box_change(self):
+        ExoScanner.data.brightness = []
+
+    def on_detect_change(self):
+        ExoScanner.data.brightness = []
+        ExoScanner.data.files = []
+        ExoScanner.data.catalogs = []
 
     def on_submit(self):
         if self.path_to_files.get() is None:
