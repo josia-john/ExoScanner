@@ -4,6 +4,8 @@
 from math import sqrt
 import numpy as np
 
+import ExoScanner.config 
+
 
 def getMeanAndDeviation(starRegion, debug=False):
     mean = [0, 0]
@@ -65,7 +67,7 @@ def saturationFinder(starRegion):
     found = False
     for i in starRegion:
         for j in i:
-           found = found or j>=0.99
+           found = found or j>=ExoScanner.config.params['saturated']*0.99
     return found
 
 def getBrightnessOfOneStarInField(starRegion, subdivide=3, debug=False):

@@ -8,6 +8,8 @@ import os
 from astropy.io import fits
 import numpy as np
 
+import ExoScanner.config
+
 def rebin(arr, new_shape):
     """Rebin 2D array arr to shape new_shape by averaging."""
     shape = (new_shape[0], arr.shape[0] // new_shape[0],
@@ -29,4 +31,5 @@ def readImage(filename, binning = 1):
         raise ValueError("your file has a not supported type!")
 
     if binning != 1: rgb = bin(rgb, binning)
+    ExoScanner.config["saturated"] = max(ExoScanner.config["saturated"], max(rgb))
     return rgb
