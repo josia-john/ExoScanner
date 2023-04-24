@@ -11,6 +11,7 @@ setup(
     install_requires=['matplotlib',
                       'numpy',                    
                       'astropy',
+                      'astroquery'
                       'statistics',
                       'photutils',
                       'scipy',

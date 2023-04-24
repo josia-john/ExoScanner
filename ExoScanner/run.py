@@ -1,6 +1,9 @@
 # The function run() calls all the functions needed in the correct order and
 # combines their returned results.
 
+import sys
+import os
+
 from ExoScanner.getFilelist import getFilelist
 from ExoScanner.generateBrightnessOfAllStarsInAllImages import generateBrightnessOfAllStarsInAllImages
 from ExoScanner.generateBrightnessOfAllStarsInAllImages import cleanUpData
@@ -11,7 +14,8 @@ from ExoScanner.getTimeOfObservation import getTimeOfObservation
 from ExoScanner.generateLightCurves import generateLightCurves
 from ExoScanner.output import outputExoplanet
 from ExoScanner.output import outputVariable
-
+from ExoScanner.output import makeQueries
+from ExoScanner import getCoordinates
 
 import ExoScanner.config
 
@@ -94,6 +98,27 @@ def run():
         outputExoplanet(lightCurves, times, imageNumber, analysis, output_location)
     else:
         outputVariable(lightCurves, times, imageNumber, analysis, output_location)
+
+
+    queryEngine = getCoordinates.Queries()
+    try:
+        print("trying to connect to astrometry.net")
+        f = open(os.devnull, 'w')
+        sys.stdout = f
+        queryEngine.initialize(files[0], "insertApiKeyHere")
+        f.close()
+        sys.stdout = sys.__stdout__
+        print("success.")
+        print("querying simbad")
+        f = open(os.devnull, 'w')
+        sys.stdout = f
+        makeQueries(analysis, queryEngine, output_location)
+        f.close()
+        sys.stdout = sys.__stdout__
+    except:
+        sys.stdout = sys.__stdout__
+        print("WARNING: failed. (is the API-key set?) sky-coordinates and simbad results will not be available.")
+
 
     ExoScanner.myAlgorithms.open_file(output_location)
     print("done")

@@ -3,7 +3,7 @@
 import matplotlib.pyplot as plt
 from ExoScanner import myAlgorithms
 import os
-
+from astropy.io import ascii
 
 
 def outputVariable(lightcurves, times, imageNumber, analysis, output_location, count=20):
@@ -94,3 +94,15 @@ def outputExoplanet(lightcurves, times, imageNumber, analysis, output_location, 
         plt.savefig(f"{output_location}/candidate-" + str(i) + ".png")
 
         plt.clf()
+
+
+def makeQueries(analysis, queryEngine, output_location, count=20):
+    count = min(count, len(analysis))
+    analysis = sorted(analysis, key=lambda d: d['score'], reverse=True)
+    for i in range(count):
+        ascii.write(queryEngine.querySimbad(*analysis[i]["coordinates"]), f"{output_location}/candidate-" + str(i) + ".csv", format="csv", overwrite=True)
+
+        f = open(f"{output_location}/candidate-" + str(i) + ".md", "w")
+        f.write("# Candidate #" + str(i) + ":\n" + str(queryEngine.getCoordinates(*analysis[i]["coordinates"])))
+        f.close()
+        
