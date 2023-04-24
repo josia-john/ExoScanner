@@ -18,25 +18,39 @@ import ExoScanner.config
 from astropy.time import Time
 
 import ExoScanner.myAlgorithms
-
+from ExoScanner.data import brightness,files,catalogs
 
 def run():
     pathToLights = ExoScanner.config.params["input_path"]
     output_location = ExoScanner.config.params["output_path"]
     
-    print("finding files...")
-    files = getFilelist(pathToLights)   # get all files
-    print("found", len(files), "files")
-
+    if len(ExoScanner.data.files) == 0:
+        print("finding files...")
+        files = getFilelist(pathToLights)   # get all files
+        ExoScanner.data.files = files
+        print("found", len(files), "files")
+    else:
+        files = ExoScanner.data.files
     if (len(files)<25):
         print("ERROR: At least 25 files are required.")
         exit(0)
 
-    print("finding stars in all images")
-    catalogs, files = generateCatalogs(files)   # get catalogs and ignore files with less than 20 stars
+    if len(ExoScanner.data.catalogs) == 0:
+        print("finding stars in all images")
+        catalogs, files = generateCatalogs(files)   # get catalogs and ignore files with less than 20 stars
+        ExoScanner.data.catalogs = catalogs
+        ExoScanner.data.files = files
+    else:
+        catalogs = ExoScanner.data.catalogs
+        files = ExoScanner.data.files
+    if len(ExoScanner.data.brightness) == 0:
+        print("calculate brightness of stars")
+        brightness = generateBrightnessOfAllStarsInAllImages(files, catalogs, mergeCatalogs(catalogs))  # get brightness
+        ExoScanner.data.brightness = brightness
+    else:
+        brightness = ExoScanner.data.brightness
 
-    print("calculate brightness of stars")
-    brightness = generateBrightnessOfAllStarsInAllImages(files, catalogs, mergeCatalogs(catalogs))  # get brightness
+    print("cleanup data")
     brightness, axis, stars = cleanUpData(brightness)   # remove bad images and bad stars
 
     print(len(axis), "files are usable. The others will be ignored.")
