@@ -31,5 +31,5 @@ def readImage(filename, binning = 1):
         raise ValueError("your file has a not supported type!")
 
     if binning != 1: rgb = bin(rgb, binning)
-    ExoScanner.config["saturated"] = max(ExoScanner.config["saturated"], max(rgb))
+    ExoScanner.config.params["saturated"] = max(ExoScanner.config.params["saturated"], np.amax(rgb))
     return rgb
