@@ -8,7 +8,6 @@ from astropy.io import ascii
 
 def outputVariable(lightcurves, times, imageNumber, analysis, output_location, count=20):
     count = min(count, len(analysis))
-    analysis = sorted(analysis, key=lambda d: d['score'], reverse=True)
 
     print(count, "canditates will be returned. Default is 20.")
 
@@ -55,7 +54,6 @@ def outputVariable(lightcurves, times, imageNumber, analysis, output_location, c
 
 def outputExoplanet(lightcurves, times, imageNumber, analysis, output_location, count=20):
     count = min(count, len(analysis))
-    analysis = sorted(analysis, key=lambda d: d['score'], reverse=True)
 
     print(count, "canditates will be returned. Default is 20.")
 
@@ -96,9 +94,20 @@ def outputExoplanet(lightcurves, times, imageNumber, analysis, output_location, 
         plt.clf()
 
 
+def outputLightcurveToCSV(analysis, times, lightcurves, output_location, count=20):
+    count = min(count, len(analysis))
+
+    for i in range(count):
+        lc = lightcurves[analysis[i]["index"]]
+        f = open(f"{output_location}/candidate-" + str(i) + ".csv", "w")
+        f.write("JD\tMAG\n")
+        for j in range(len(lc)):
+            f.write(str(times[j]) + "\t" + str(lc[j]) + "\n")
+        f.close()
+
+
 def makeQueries(analysis, queryEngine, output_location, count=20):
     count = min(count, len(analysis))
-    analysis = sorted(analysis, key=lambda d: d['score'], reverse=True)
     for i in range(count):
         ascii.write(queryEngine.querySimbad(*analysis[i]["coordinates"]), f"{output_location}/candidate-" + str(i) + ".csv", format="csv", overwrite=True)
 

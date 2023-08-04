@@ -13,6 +13,7 @@ from ExoScanner.analyzeLightCurves import analyzeLightCurves
 from ExoScanner.getTimeOfObservation import getTimeOfObservation
 from ExoScanner.generateLightCurves import generateLightCurves
 from ExoScanner.output import outputExoplanet
+from ExoScanner.output import outputLightcurveToCSV
 from ExoScanner.output import outputVariable
 from ExoScanner.output import makeQueries
 from ExoScanner import getCoordinates
@@ -90,6 +91,8 @@ def run():
         analysis[i]["index"] = i
         analysis[i]["coordinates"] = (round(catalogs[0]["xcentroid"][stars[i]]),round(catalogs[0]["ycentroid"][stars[i]]))
 
+    analysis = sorted(analysis, key=lambda d: d['score'], reverse=True)
+
     print("writing output files")
 
     if (ExoScanner.config.params["analysisMode"] == "variable"):
@@ -117,8 +120,11 @@ def run():
         sys.stdout = sys.__stdout__
     except:
         sys.stdout = sys.__stdout__
-        print("WARNING: failed. (is the API-key set?) sky-coordinates and simbad results will not be available.")
+        print("WARNING: querying astrometry.net failed. (is the API-key set?) sky-coordinates and simbad results will not be available.")
 
+    print("writing datapoints to CSV")
+
+    outputLightcurveToCSV(analysis, times, lightCurves, output_location)
 
     ExoScanner.myAlgorithms.open_file(output_location)
     print("done")
