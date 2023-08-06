@@ -54,10 +54,17 @@ run ExoScanner with a GUI:
 python -m ExoScanner
 ```
 
-## How to compile with pyinstaller?
+## How to compile with pyinstaller? (this is for me, so that I don't forget)
 The program can be "compiled" into a .exe file using pyinstaller: Be sure to replace "\<path>\" with the location to the cli.py file
 ```
 pyinstaller --noconfirm --onefile --console --name "ExoScanner" --hidden-import "photutils.geometry.core" --collect-data "photutils" --hidden-import "ttkthemes" --icon "<path>/images/Exoscanner_logo.ico" --add-data "<path>/ExoScanner/Exoscanner_logo.png;Exoscanner" "<path>/cli.py"
+```
+
+## Upload to PyPi (this is for me, so that I don't forget)
+
+```
+python setup.py sdist
+twine upload dist/*
 ```
 
 ## FAQ

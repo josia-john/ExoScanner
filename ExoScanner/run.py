@@ -3,6 +3,7 @@
 
 import sys
 import os
+import warnings
 
 from ExoScanner.getFilelist import getFilelist
 from ExoScanner.generateBrightnessOfAllStarsInAllImages import generateBrightnessOfAllStarsInAllImages
@@ -102,29 +103,32 @@ def run():
     else:
         outputVariable(lightCurves, times, imageNumber, analysis, output_location)
 
+    print("writing datapoints to CSV")
+    outputLightcurveToCSV(analysis, times, lightCurves, output_location)
 
     queryEngine = getCoordinates.Queries()
     try:
+        if (ExoScanner.config.params["astrometryApiKey"]==""): raise Exception
         print("trying to connect to astrometry.net")
         f = open(os.devnull, 'w')
         sys.stdout = f
-        queryEngine.initialize(files[0], "insertApiKeyHere")
+        queryEngine.initialize(files[0], ExoScanner.config.params["astrometryApiKey"])
         f.close()
         sys.stdout = sys.__stdout__
         print("success.")
         print("querying simbad")
         f = open(os.devnull, 'w')
         sys.stdout = f
+        warnings.filterwarnings("ignore")
         makeQueries(analysis, queryEngine, output_location)
+        warnings.filterwarnings("default")
         f.close()
         sys.stdout = sys.__stdout__
     except:
         sys.stdout = sys.__stdout__
         print("WARNING: querying astrometry.net failed. (is the API-key set?) sky-coordinates and simbad results will not be available.")
 
-    print("writing datapoints to CSV")
 
-    outputLightcurveToCSV(analysis, times, lightCurves, output_location)
 
     ExoScanner.myAlgorithms.open_file(output_location)
     print("done")

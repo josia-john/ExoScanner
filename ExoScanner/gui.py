@@ -69,6 +69,10 @@ class Window(Frame):
         self.mode = ttk.Combobox(values=["variable", "exoplanet"])
         self.mode.insert(0, "variable")
 
+        self.astrometrynet_api_key_label = ttk.Label(wraplength=500, text="API-Key for nova.astrometry.net, used for platesolving. (optional)")
+        self.astrometrynet_api_key = ttk.Entry()
+        self.astrometrynet_api_key.insert(0, ExoScanner.config.params["astrometryApiKey"])
+
         self.submit = ttk.Button(self.master, text="Submit",
                                  command=lambda: self.on_submit())
 
@@ -90,6 +94,8 @@ class Window(Frame):
         self.param_star_image_ratio.grid(column=0, row=12, padx=5, ipady=5, ipadx=100)
         self.mode_label.grid(column=0, row=13, padx=5)
         self.mode.grid(column=0, row=14, padx=5, ipady=5, ipadx=100)
+        self.astrometrynet_api_key_label.grid(column=0, row=15, padx=5)
+        self.astrometrynet_api_key.grid(column=0, row=16, padx=5, ipady=5, ipadx=100)
         
 
         self.submit.grid(column=1, row=4, padx=5, pady=25)
@@ -145,6 +151,9 @@ class Window(Frame):
             print("no mode provided, can't start ExoScanner")
             return
         ExoScanner.config.params["analysisMode"] = self.mode.get()
+        if self.astrometrynet_api_key.get() is None:
+            print("WARNING: no api-key set.")
+        ExoScanner.config.params["astrometryApiKey"] = self.astrometrynet_api_key.get()
         
         self.submit["state"] = "disabled"
         run()

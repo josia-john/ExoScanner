@@ -109,9 +109,9 @@ def outputLightcurveToCSV(analysis, times, lightcurves, output_location, count=2
 def makeQueries(analysis, queryEngine, output_location, count=20):
     count = min(count, len(analysis))
     for i in range(count):
-        ascii.write(queryEngine.querySimbad(*analysis[i]["coordinates"]), f"{output_location}/candidate-" + str(i) + ".csv", format="csv", overwrite=True)
+        ascii.write(queryEngine.querySimbad(*analysis[i]["coordinates"]), f"{output_location}/candidate-" + str(i) + "-simbad.csv", format="csv", overwrite=True)
 
-        f = open(f"{output_location}/candidate-" + str(i) + ".md", "w")
+        f = open(f"{output_location}/candidate-" + str(i) + "-coordinates.md", "w")
         f.write("# Candidate #" + str(i) + ":\n" + str(queryEngine.getCoordinates(*analysis[i]["coordinates"])))
         f.close()
         
