@@ -47,17 +47,28 @@ with `<path>` being the path to a folder with the to be analyzed light-frames.
 and `<output>` being the path to the folder where the output images should be
 saved.
 
-On mac, you can install ExoScanner as a python-package. Then you can run the following command to
-run ExoScanner with a GUI:
+Or you can run the following command to run ExoScanner with a GUI:
 
 ```
 python -m ExoScanner
 ```
 
-## How to compile with pyinstaller?
+## How to compile with pyinstaller? (this is for me, so that I don't forget)
 The program can be "compiled" into a .exe file using pyinstaller: Be sure to replace "\<path>\" with the location to the cli.py file
 ```
-pyinstaller --noconfirm --onefile --console --name "ExoScanner" --hidden-import "photutils.geometry.core" --collect-data "photutils" --hidden-import "ttkthemes" --icon "<path>/images/Exoscanner_logo.ico" --add-data "<path>/ExoScanner/Exoscanner_logo.png;Exoscanner" "<path>/cli.py"
+pyinstaller --noconfirm --onefile --console --name "ExoScanner" --hidden-import "photutils.geometry.core" --collect-data "photutils" --hidden-import "ttkthemes" --collect-data "astroquery" --hidden-import "astroquery" --icon "<path>/images/Exoscanner_logo.ico" --add-data "<path>/ExoScanner/Exoscanner_logo.png;Exoscanner" "<path>/cli.py"
+```
+
+To activate the venv, use:
+```
+.venv\Scrips\activate
+```
+
+## Upload to PyPi (this is for me, so that I don't forget)
+
+```
+python setup.py sdist
+twine upload dist/*
 ```
 
 ## FAQ

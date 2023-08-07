@@ -1,6 +1,10 @@
 # The function run() calls all the functions needed in the correct order and
 # combines their returned results.
 
+import sys
+import os
+import warnings
+
 from ExoScanner.getFilelist import getFilelist
 from ExoScanner.generateBrightnessOfAllStarsInAllImages import generateBrightnessOfAllStarsInAllImages
 from ExoScanner.generateBrightnessOfAllStarsInAllImages import cleanUpData
@@ -10,33 +14,49 @@ from ExoScanner.analyzeLightCurves import analyzeLightCurves
 from ExoScanner.getTimeOfObservation import getTimeOfObservation
 from ExoScanner.generateLightCurves import generateLightCurves
 from ExoScanner.output import outputExoplanet
+from ExoScanner.output import outputLightcurveToCSV
 from ExoScanner.output import outputVariable
-
+from ExoScanner.output import makeQueries
+from ExoScanner import getCoordinates
 
 import ExoScanner.config
 
 from astropy.time import Time
 
 import ExoScanner.myAlgorithms
-
+from ExoScanner.data import brightness,files,catalogs
 
 def run():
     pathToLights = ExoScanner.config.params["input_path"]
     output_location = ExoScanner.config.params["output_path"]
     
-    print("finding files...")
-    files = getFilelist(pathToLights)   # get all files
-    print("found", len(files), "files")
-
+    if len(ExoScanner.data.files) == 0:
+        print("finding files...")
+        files = getFilelist(pathToLights)   # get all files
+        ExoScanner.data.files = files
+        print("found", len(files), "files")
+    else:
+        files = ExoScanner.data.files
     if (len(files)<25):
         print("ERROR: At least 25 files are required.")
         exit(0)
 
-    print("finding stars in all images")
-    catalogs, files = generateCatalogs(files)   # get catalogs and ignore files with less than 20 stars
+    if len(ExoScanner.data.catalogs) == 0:
+        print("finding stars in all images")
+        catalogs, files = generateCatalogs(files)   # get catalogs and ignore files with less than 20 stars
+        ExoScanner.data.catalogs = catalogs
+        ExoScanner.data.files = files
+    else:
+        catalogs = ExoScanner.data.catalogs
+        files = ExoScanner.data.files
+    if len(ExoScanner.data.brightness) == 0:
+        print("calculate brightness of stars")
+        brightness = generateBrightnessOfAllStarsInAllImages(files, catalogs, mergeCatalogs(catalogs))  # get brightness
+        ExoScanner.data.brightness = brightness
+    else:
+        brightness = ExoScanner.data.brightness
 
-    print("calculate brightness of stars")
-    brightness = generateBrightnessOfAllStarsInAllImages(files, catalogs, mergeCatalogs(catalogs))  # get brightness
+    print("cleanup data")
     brightness, axis, stars = cleanUpData(brightness)   # remove bad images and bad stars
 
     print(len(axis), "files are usable. The others will be ignored.")
@@ -72,6 +92,8 @@ def run():
         analysis[i]["index"] = i
         analysis[i]["coordinates"] = (round(catalogs[0]["xcentroid"][stars[i]]),round(catalogs[0]["ycentroid"][stars[i]]))
 
+    analysis = sorted(analysis, key=lambda d: d['score'], reverse=True)
+
     print("writing output files")
 
     if (ExoScanner.config.params["analysisMode"] == "variable"):
@@ -80,6 +102,33 @@ def run():
         outputExoplanet(lightCurves, times, imageNumber, analysis, output_location)
     else:
         outputVariable(lightCurves, times, imageNumber, analysis, output_location)
+
+    print("writing datapoints to CSV")
+    outputLightcurveToCSV(analysis, times, lightCurves, output_location)
+
+    queryEngine = getCoordinates.Queries()
+    try:
+        if (ExoScanner.config.params["astrometryApiKey"]==""): raise Exception
+        print("trying to connect to astrometry.net")
+        f = open(os.devnull, 'w')
+        sys.stdout = f
+        queryEngine.initialize(files[0], ExoScanner.config.params["astrometryApiKey"])
+        f.close()
+        sys.stdout = sys.__stdout__
+        print("success.")
+        print("querying simbad")
+        f = open(os.devnull, 'w')
+        sys.stdout = f
+        warnings.filterwarnings("ignore")
+        makeQueries(analysis, queryEngine, output_location)
+        warnings.filterwarnings("default")
+        f.close()
+        sys.stdout = sys.__stdout__
+    except:
+        sys.stdout = sys.__stdout__
+        print("WARNING: querying astrometry.net failed. (is the API-key set?) sky-coordinates and simbad results will not be available.")
+
+
 
     ExoScanner.myAlgorithms.open_file(output_location)
     print("done")

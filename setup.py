@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='ExoScanner',
-    version='0.2.3',    
+    version='0.2.4',    
     description='A program to analyze an image-series for exoplanet transits.',
     url='https://github.com/josia-john/ExoScanner',
     author='Josia John',
@@ -11,6 +11,7 @@ setup(
     install_requires=['matplotlib',
                       'numpy',                    
                       'astropy',
+                      'astroquery',
                       'statistics',
                       'photutils',
                       'scipy',

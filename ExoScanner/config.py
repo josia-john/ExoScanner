@@ -5,7 +5,9 @@ params = {
     "starThreshold": 15,        # Threshold for finding stars. (passed to DAOFIND)
     "StarImageRatio": 3,        # Higher -> Remove more stars; Lower -> Remove more images
     "boxSize": 8,               # Box Size for determining brightness of a star
-    "analysisMode": "variable"  # search for variable stars ("variable") or transits ("exoplanet")
+    "analysisMode": "variable", # search for variable stars ("variable") or transits ("exoplanet")
+    "saturated": 1,             # Max value for a pixel. If this is reached, the star is thrown away.
+    "astrometryApiKey": ""
 }
 
 
