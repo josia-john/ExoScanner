@@ -1,6 +1,6 @@
 params = {
-    "input_path": "G:/2023-08-18 (Sh2-114)/V2",           # input location
-    "output_path": "G:/2023-08-18 (Sh2-114)/V2/Results",          # output location
+    "input_path": "",           # input location
+    "output_path": "",          # output location
     "FWHM": 4,                  # Full-Width-Half-Maximum for finding stars. (passed to DAOFIND)
     "starThreshold": 15,        # Threshold for finding stars. (passed to DAOFIND)
     "StarImageRatio": 3,        # Higher -> Remove more stars; Lower -> Remove more images
