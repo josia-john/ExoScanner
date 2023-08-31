@@ -33,7 +33,7 @@ class Window(Frame):
         # initializing fields
         self.path_to_files_label = ttk.Label(wraplength=500, text="Input files directory:")
         svvx = StringVar()
-        svvx.trace("w", lambda name, index, mode, sv=svvx: self.on_detect_change())
+        svvx.trace("w", lambda name, index, mode, sv=svvx: self.on_full_change())
         self.path_to_files = ttk.Entry(textvariable=svvx)
         self.browse_input = ttk.Button(self.master, text="browse", command=self.set_input_file_location)
         self.path_to_files.insert(0,ExoScanner.config.params["input_path"])
@@ -56,7 +56,9 @@ class Window(Frame):
         self.param_star_threshold.insert(0, ExoScanner.config.params["starThreshold"])
 
         self.param_star_image_ratio_label = ttk.Label(wraplength=500, text="Star to image valuing ratio. (determines to throw away more stars (higher) or to throw away more images (lower); default (3) should be ok)")
-        self.param_star_image_ratio = ttk.Entry()
+        svvy = StringVar()
+        svvy.trace("w", lambda name, index, mode, sv=svvy: self.on_ratio_change())
+        self.param_star_image_ratio = ttk.Entry(textvariable=svvy)
         self.param_star_image_ratio.insert(0, ExoScanner.config.params["StarImageRatio"])
 
         self.param_box_size_brightness_calc_label = ttk.Label(wraplength=500, text="brightness calculation box size (determines the size of the box which is used to determine the brightness of a star; default (8) should be ok)")
@@ -65,8 +67,14 @@ class Window(Frame):
         self.param_box_size_brightness_calc = ttk.Entry(textvariable=sv)
         self.param_box_size_brightness_calc.insert(0, ExoScanner.config.params["boxSize"])
 
+        self.param_output_count_label = ttk.Label(wraplength=500, text="Number of results")
+        self.param_output_count = ttk.Entry()
+        self.param_output_count.insert(0, ExoScanner.config.params["outputCount"])
+
         self.mode_label = ttk.Label(wraplength=500, text="Search for variable stars ('variable') or transits ('exoplanet'). Default is 'variable'")
-        self.mode = ttk.Combobox(values=["variable", "exoplanet"])
+        svz = StringVar()
+        svz.trace("w", lambda name, index, mode, sv=svz: self.on_method_change())
+        self.mode = ttk.Combobox(values=["variable", "exoplanet"],textvariable=svz)
         self.mode.insert(0, "variable")
 
         self.astrometrynet_api_key_label = ttk.Label(wraplength=500, text="API-Key for nova.astrometry.net, used for platesolving. (optional)")
@@ -94,8 +102,10 @@ class Window(Frame):
         self.param_star_image_ratio.grid(column=0, row=12, padx=5, ipady=5, ipadx=100)
         self.mode_label.grid(column=0, row=13, padx=5)
         self.mode.grid(column=0, row=14, padx=5, ipady=5, ipadx=100)
-        self.astrometrynet_api_key_label.grid(column=0, row=15, padx=5)
-        self.astrometrynet_api_key.grid(column=0, row=16, padx=5, ipady=5, ipadx=100)
+        self.param_output_count_label.grid(column=0, row=15, padx=5, ipady=5, ipadx=100)
+        self.param_output_count.grid(column=0, row=16, padx=5, ipady=5, ipadx=100)
+        self.astrometrynet_api_key_label.grid(column=0, row=17, padx=5)
+        self.astrometrynet_api_key.grid(column=0, row=18, padx=5, ipady=5, ipadx=100)
         
 
         self.submit.grid(column=1, row=4, padx=5, pady=25)
@@ -116,11 +126,42 @@ class Window(Frame):
 
     def on_box_change(self):
         ExoScanner.data.brightness = []
+        ExoScanner.data.brightness_ca = []
+        ExoScanner.data.axis = []
+        ExoScanner.data.stars = []
+        ExoScanner.data.lightCurves = []
+        ExoScanner.data.analysis = []
 
     def on_detect_change(self):
         ExoScanner.data.brightness = []
         ExoScanner.data.files = []
         ExoScanner.data.catalogs = []
+        ExoScanner.data.brightness_ca = []
+        ExoScanner.data.axis = []
+        ExoScanner.data.stars = []
+        ExoScanner.data.lightCurves = []
+        ExoScanner.data.analysis = []
+
+    def on_full_change(self):
+        ExoScanner.data.brightness = []
+        ExoScanner.data.files = []
+        ExoScanner.data.catalogs = []
+        ExoScanner.data.brightness_ca = []
+        ExoScanner.data.axis = []
+        ExoScanner.data.stars = []
+        ExoScanner.data.lightCurves = []
+        ExoScanner.data.queryEngine = None
+        ExoScanner.data.analysis = []
+
+    def on_ratio_change(self):
+        ExoScanner.data.brightness_ca = []
+        ExoScanner.data.axis = []
+        ExoScanner.data.stars = []
+        ExoScanner.data.lightCurves = []
+        ExoScanner.data.analysis = []
+
+    def on_method_change(self):
+        ExoScanner.data.analysis = []
 
     def on_submit(self):
         if self.path_to_files.get() is None:
@@ -151,6 +192,8 @@ class Window(Frame):
             print("no mode provided, can't start ExoScanner")
             return
         ExoScanner.config.params["analysisMode"] = self.mode.get()
+        ExoScanner.config.params["outputCount"] = int(self.param_output_count.get())
+
         if self.astrometrynet_api_key.get() is None:
             print("WARNING: no api-key set.")
         ExoScanner.config.params["astrometryApiKey"] = self.astrometrynet_api_key.get()

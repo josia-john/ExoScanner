@@ -1,4 +1,9 @@
 files = []
 brightness = []
+brightness_ca = []
 catalogs = []
-
+axis = []
+stars = []
+lightCurves = []
+analysis = []
+queryEngine = None

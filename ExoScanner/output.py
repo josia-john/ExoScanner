@@ -9,7 +9,7 @@ from astropy.io import ascii
 def outputVariable(lightcurves, times, imageNumber, analysis, output_location, count=20):
     count = min(count, len(analysis))
 
-    print(count, "canditates will be returned. Default is 20.")
+    print(count, "canditates will be returned.")
 
     try:
         os.makedirs(output_location)
@@ -55,7 +55,7 @@ def outputVariable(lightcurves, times, imageNumber, analysis, output_location, c
 def outputExoplanet(lightcurves, times, imageNumber, analysis, output_location, count=20):
     count = min(count, len(analysis))
 
-    print(count, "canditates will be returned. Default is 20.")
+    print(count, "canditates will be returned.")
 
     try:
         os.makedirs(output_location)
