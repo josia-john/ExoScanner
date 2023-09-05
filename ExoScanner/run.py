@@ -24,7 +24,8 @@ import ExoScanner.config
 from astropy.time import Time
 
 import ExoScanner.myAlgorithms
-from ExoScanner.data import brightness,files,catalogs
+import ExoScanner.data
+#from ExoScanner.data import brightness,files,catalogs,axis,analysis,brightness_ca,stars,queryEngine,lightCurves
 
 def run():
     pathToLights = ExoScanner.config.params["input_path"]
@@ -107,8 +108,12 @@ def run():
 
         analysis = sorted(analysis, key=lambda d: d['score'], reverse=True)
         ExoScanner.data.analysis = analysis
+        ExoScanner.data.times = times
+        ExoScanner.data.imageNumber = imageNumber
     else:
         analysis = ExoScanner.data.analysis
+        times = ExoScanner.data.times
+        imageNumber = ExoScanner.data.imageNumber
         
     print("writing output files")
 

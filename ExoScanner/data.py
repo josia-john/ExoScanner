@@ -6,4 +6,6 @@ axis = []
 stars = []
 lightCurves = []
 analysis = []
+times = []
+imageNumber = None
 queryEngine = None
