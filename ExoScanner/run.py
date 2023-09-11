@@ -24,7 +24,8 @@ import ExoScanner.config
 from astropy.time import Time
 
 import ExoScanner.myAlgorithms
-from ExoScanner.data import brightness,files,catalogs
+import ExoScanner.data
+#from ExoScanner.data import brightness,files,catalogs,axis,analysis,brightness_ca,stars,queryEngine,lightCurves
 
 def run():
     pathToLights = ExoScanner.config.params["input_path"]
@@ -56,71 +57,98 @@ def run():
     else:
         brightness = ExoScanner.data.brightness
 
-    print("cleanup data")
-    brightness, axis, stars = cleanUpData(brightness)   # remove bad images and bad stars
+    if len(ExoScanner.data.brightness_ca) == 0:
+        print("cleanup data")
+        brightness, axis, stars = cleanUpData(brightness)   # remove bad images and bad stars
 
-    print(len(axis), "files are usable. The others will be ignored.")
-    print(len(stars), "stars are usable. The others will be ignored.")
+        print(len(axis), "files are usable. The others will be ignored.")
+        print(len(stars), "stars are usable. The others will be ignored.")
 
-    if (len(axis)<25):
-        print("ERROR: At least 25 files are required. Only", len(axis), "usable files were provided.")
-        exit(0)
+        if (len(axis)<25):
+            print("ERROR: At least 25 files are required. Only", len(axis), "usable files were provided.")
+            exit(0)
 
-    if (len(stars)<5):
-        print("ERROR: At least 5 stars are required. Only", len(stars), "usable stars were found.")
-        exit(0)
+        if (len(stars)<5):
+            print("ERROR: At least 5 stars are required. Only", len(stars), "usable stars were found.")
+            exit(0)
 
-    print("generate all lightcurves by comparing the brightness of different stars")
-    lightCurves = generateLightCurves(brightness)   # get Lightcurves
+        print("generate all lightcurves by comparing the brightness of different stars")
+        lightCurves = generateLightCurves(brightness)   # get Lightcurves
 
-    print("analyzing the lightcurves")
-    analysis = analyzeLightCurves(lightCurves)
+        ExoScanner.data.brightness_ca = brightness
+        ExoScanner.data.axis = axis
+        ExoScanner.data.stars = stars
+        ExoScanner.data.lightCurves = lightCurves
 
-    times = []  # get observation-times for the included images
-    for i in axis:
-        times.append(getTimeOfObservation(files[i]))
-
-    imageNumber = 0
-
-    if not -1 in times:
-        times = Time(times, format='isot', scale='utc').jd
     else:
-        times = axis
-        imageNumber = 1
+        brightness = ExoScanner.data.brightness_ca
+        axis = ExoScanner.data.axis
+        stars = ExoScanner.data.stars
+        lightCurves = ExoScanner.data.lightCurves
+    
+    if len(ExoScanner.data.analysis) == 0:
+        print("analyzing the lightcurves")
+        analysis = analyzeLightCurves(lightCurves)
 
-    for i in range(len(analysis)):  # add index and coordinates in the first image to the analysis of each star
-        analysis[i]["index"] = i
-        analysis[i]["coordinates"] = (round(catalogs[0]["xcentroid"][stars[i]]),round(catalogs[0]["ycentroid"][stars[i]]))
+        times = []  # get observation-times for the included images
+        for i in axis:
+            times.append(getTimeOfObservation(files[i]))
 
-    analysis = sorted(analysis, key=lambda d: d['score'], reverse=True)
+        imageNumber = 0
 
+        if not -1 in times:
+            times = Time(times, format='isot', scale='utc').jd
+        else:
+            times = axis
+            imageNumber = 1
+
+        for i in range(len(analysis)):  # add index and coordinates in the first image to the analysis of each star
+            analysis[i]["index"] = i
+            analysis[i]["coordinates"] = (round(catalogs[0]["xcentroid"][stars[i]]),round(catalogs[0]["ycentroid"][stars[i]]))
+
+        analysis = sorted(analysis, key=lambda d: d['score'], reverse=True)
+        ExoScanner.data.analysis = analysis
+        ExoScanner.data.times = times
+        ExoScanner.data.imageNumber = imageNumber
+    else:
+        analysis = ExoScanner.data.analysis
+        times = ExoScanner.data.times
+        imageNumber = ExoScanner.data.imageNumber
+        
     print("writing output files")
 
     if (ExoScanner.config.params["analysisMode"] == "variable"):
-        outputVariable(lightCurves, times, imageNumber, analysis, output_location)
+        outputVariable(lightCurves, times, imageNumber, analysis, output_location,ExoScanner.config.params["outputCount"])
     elif (ExoScanner.config.params["analysisMode"] == "exoplanet"):
-        outputExoplanet(lightCurves, times, imageNumber, analysis, output_location)
+        outputExoplanet(lightCurves, times, imageNumber, analysis, output_location,ExoScanner.config.params["outputCount"])
     else:
-        outputVariable(lightCurves, times, imageNumber, analysis, output_location)
+        outputVariable(lightCurves, times, imageNumber, analysis, output_location,ExoScanner.config.params["outputCount"])
 
     print("writing datapoints to CSV")
-    outputLightcurveToCSV(analysis, times, lightCurves, output_location)
+    outputLightcurveToCSV(analysis, times, lightCurves, output_location,ExoScanner.config.params["outputCount"])
 
-    queryEngine = getCoordinates.Queries()
+    if ExoScanner.data.queryEngine is None:
+        queryEngine = getCoordinates.Queries()
+    else:
+        queryEngine = ExoScanner.data.queryEngine
     try:
         if (ExoScanner.config.params["astrometryApiKey"]==""): raise Exception
-        print("trying to connect to astrometry.net")
-        f = open(os.devnull, 'w')
-        sys.stdout = f
-        queryEngine.initialize(files[0], ExoScanner.config.params["astrometryApiKey"])
-        f.close()
-        sys.stdout = sys.__stdout__
-        print("success.")
+        if ExoScanner.data.queryEngine is None:
+            print("trying to connect to astrometry.net")
+            f = open(os.devnull, 'w')
+            sys.stdout = f
+            queryEngine.initialize(files[0], ExoScanner.config.params["astrometryApiKey"])
+            ExoScanner.data.queryEngine = queryEngine
+            f.close()
+            sys.stdout = sys.__stdout__
+            print("success.")
+        else:
+            print("Reusing last solution")
         print("querying simbad")
         f = open(os.devnull, 'w')
         sys.stdout = f
         warnings.filterwarnings("ignore")
-        makeQueries(analysis, queryEngine, output_location)
+        makeQueries(analysis, queryEngine, output_location,ExoScanner.config.params["outputCount"])
         warnings.filterwarnings("default")
         f.close()
         sys.stdout = sys.__stdout__
