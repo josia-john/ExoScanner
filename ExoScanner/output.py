@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from ExoScanner import myAlgorithms
 import os
 from astropy.io import ascii
+import sys
 
 
 def outputVariable(lightcurves, times, imageNumber, analysis, output_location, count=20):
@@ -47,7 +48,7 @@ def outputVariable(lightcurves, times, imageNumber, analysis, output_location, c
             plt.xlabel("time (julian date)")
         plt.ylabel("brightness (normalized flux)")
 
-        plt.savefig(f"{output_location}/candidate-" + str(i) + ".png")
+        plt.savefig(os.path.join(output_location, "candidate-" + str(i) + ".png"))
 
         plt.clf()
 
@@ -89,7 +90,7 @@ def outputExoplanet(lightcurves, times, imageNumber, analysis, output_location, 
             plt.xlabel("time (julian date)")
         plt.ylabel("brightness (normalized flux)")
 
-        plt.savefig(f"{output_location}/candidate-" + str(i) + ".png")
+        plt.savefig(os.path.join(output_location, "candidate-" + str(i) + ".png"))
 
         plt.clf()
 
@@ -99,7 +100,7 @@ def outputLightcurveToCSV(analysis, times, lightcurves, output_location, count=2
 
     for i in range(count):
         lc = lightcurves[analysis[i]["index"]]
-        f = open(f"{output_location}/candidate-" + str(i) + ".csv", "w")
+        f = open(os.path.join(output_location, "candidate-" + str(i) + ".csv"), "w")
         f.write("JD\tMAG\n")
         for j in range(len(lc)):
             f.write(str(times[j]) + "\t" + str(lc[j]) + "\n")
@@ -109,9 +110,9 @@ def outputLightcurveToCSV(analysis, times, lightcurves, output_location, count=2
 def makeQueries(analysis, queryEngine, output_location, count=20):
     count = min(count, len(analysis))
     for i in range(count):
-        ascii.write(queryEngine.querySimbad(*analysis[i]["coordinates"]), f"{output_location}/candidate-" + str(i) + "-simbad.csv", format="csv", overwrite=True)
+        ascii.write(queryEngine.querySimbad(*analysis[i]["coordinates"]), os.path.join(output_location, "candidate-" + str(i) + "-simbad.csv"), format="csv", overwrite=True)
 
-        f = open(f"{output_location}/candidate-" + str(i) + "-coordinates.md", "w")
+        f = open(os.path.join(str(output_location), "candidate-" + str(i) + "-coordinates.md"), "w")
         f.write("# Candidate #" + str(i) + ":\n" + str(queryEngine.getCoordinates(*analysis[i]["coordinates"])))
         f.close()
         

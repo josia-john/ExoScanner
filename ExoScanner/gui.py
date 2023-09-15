@@ -206,7 +206,7 @@ class Window(Frame):
             "params": ExoScanner.config.params
         }
 
-        with open(ExoScanner.config.params["output_path"] + "\\"+ ExoScanner.config.params["data_file"],'wb') as f:
+        with open(os.path.join(ExoScanner.config.params["output_path"], ExoScanner.config.params["data_file"]),'wb') as f:
             pickle.dump(data,f, pickle.HIGHEST_PROTOCOL)
 
     def load_data(self):
@@ -215,7 +215,7 @@ class Window(Frame):
             return
         ExoScanner.config.params["output_path"] = self.path_to_output.get()
         ExoScanner.config.params["data_file"] = self.data_file.get()
-        with open(ExoScanner.config.params["output_path"] + "\\"+ ExoScanner.config.params["data_file"],'rb') as f:
+        with open(os.path.join(ExoScanner.config.params["output_path"], ExoScanner.config.params["data_file"]),'rb') as f:
             datax = pickle.load(f)
 
             ExoScanner.config.params = datax['params']
